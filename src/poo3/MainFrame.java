@@ -78,6 +78,8 @@ public class MainFrame extends JFrame {
         controlsPanel.add(openFileButton);
 
         textArea = new JTextArea(25, 25);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
         JScrollPane editorPanel = new JScrollPane(textArea);
         EmptyBorder emptyBorder = new EmptyBorder(5, 10, 5, 10);
         Border loweredBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
