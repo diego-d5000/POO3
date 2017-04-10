@@ -32,6 +32,33 @@ public class TextDocument {
         this.contents = fileText;
     }
 
+    public void saveFile() throws IOException {
+        String pathname = file.getPath();
+
+        FileWriter fileWriter = null;
+        fileWriter = new FileWriter(pathname);
+
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        bufferedWriter.write(this.contents);
+        bufferedWriter.close();
+    }
+
+    public void renameFile(String newName) {
+        String newFilePathName = file.getParent() + "/" + newName;
+        File newFile = new File(newFilePathName);
+        if (file.renameTo(newFile)) {
+            JOptionPane.showMessageDialog(null, "El fichero ha sido renombrado");
+            this.file = newFile;
+            this.fileName = newFile.getName();
+        } else {
+            JOptionPane.showMessageDialog(null, "El fichero no puede ser renombrado");
+        }
+    }
+
+    public boolean deleteFile() {
+        return file.delete();
+    }
+
     public String getFileName() {
         return fileName;
     }
@@ -54,5 +81,6 @@ public class TextDocument {
 
     public void setFile(File file) {
         this.file = file;
+        this.fileName = file.getName();
     }
 }
