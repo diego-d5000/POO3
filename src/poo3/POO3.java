@@ -5,6 +5,9 @@
  */
 package poo3;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author diego-d
@@ -15,9 +18,27 @@ public class POO3 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MainFrame mainFrame = new MainFrame();
-        mainFrame.setupView();
-        mainFrame.setVisible(true);
+        RequestThread requestThread = new RequestThread("http://time.jsontest.com/");
+        requestThread.start();
+
+        SecondsTimerThread secondsTimerThread = new SecondsTimerThread(10, new SecondsTimerThread.TimerEndListener() {
+            @Override
+            public void onEnd() {
+                RequestThread requestThread = new RequestThread("http://time.jsontest.com/");
+                requestThread.start();
+            }
+        });
+
+        secondsTimerThread.start();
+
+        try {
+            Thread.currentThread().sleep(20000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(POO3.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        RequestThread requestThreadTwo = new RequestThread("http://time.jsontest.com/");
+        requestThreadTwo.start();
     }
-    
+
 }
