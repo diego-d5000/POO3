@@ -12,30 +12,34 @@ import java.util.logging.Logger;
  *
  * @author diego-d
  */
-public class SecondsTimerThread extends Thread {
-    private long counter;
+public class PocessCounterThread extends Thread {
+
+    private final long HALF_SECOND = 500;
+    private int counter;
+    private int multiple;
+    private String threadName;
     private TimerEndListener callback;
 
-    public SecondsTimerThread(long millisStart, TimerEndListener callback) {
-        this.counter = millisStart;
+    public PocessCounterThread(int initialCounter, String threadName, TimerEndListener callback) {
+        this.counter = initialCounter;
+        this.multiple = initialCounter;
         this.callback = callback;
+        this.threadName = threadName;
     }
-    
-    
 
     @Override
     public void run() {
         while (true) {
-            System.err.println(counter);
-            counter--;
-            if(counter < 0){
+            System.out.println(String.valueOf(counter) + " en " + threadName);
+            if (counter == multiple * 10) {
                 callback.onEnd();
                 return;
             }
+            counter += multiple;
             try {
-                sleep(1000);
+                sleep(HALF_SECOND);
             } catch (InterruptedException ex) {
-                Logger.getLogger(SecondsTimerThread.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PocessCounterThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -45,6 +49,7 @@ public class SecondsTimerThread extends Thread {
     }
 
     public static interface TimerEndListener {
+
         void onEnd();
     }
 

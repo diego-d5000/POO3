@@ -18,27 +18,21 @@ public class POO3 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        RequestThread requestThread = new RequestThread("http://time.jsontest.com/");
-        requestThread.start();
 
-        SecondsTimerThread secondsTimerThread = new SecondsTimerThread(10, new SecondsTimerThread.TimerEndListener() {
+        new PocessCounterThread(2, "Hilo 1", new PocessCounterThread.TimerEndListener() {
             @Override
             public void onEnd() {
-                RequestThread requestThread = new RequestThread("http://time.jsontest.com/");
-                requestThread.start();
+                System.out.println("Hilo 1 Terminado");
             }
-        });
+        }).start();
+        
+        new PocessCounterThread(3, "Hilo 2", new PocessCounterThread.TimerEndListener() {
+            @Override
+            public void onEnd() {
+                System.out.println("Hilo 2 Terminado");
+            }
+        }).start();
 
-        secondsTimerThread.start();
-
-        try {
-            Thread.currentThread().sleep(20000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(POO3.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        RequestThread requestThreadTwo = new RequestThread("http://time.jsontest.com/");
-        requestThreadTwo.start();
     }
 
 }
