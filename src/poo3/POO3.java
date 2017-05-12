@@ -5,6 +5,7 @@
  */
 package poo3;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,25 +14,19 @@ import java.util.logging.Logger;
  * @author diego-d
  */
 public class POO3 {
-
+    
+    static final int MAX = 100;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-        new PocessCounterThread(2, "Hilo 1", new PocessCounterThread.TimerEndListener() {
-            @Override
-            public void onEnd() {
-                System.out.println("Hilo 1 Terminado");
-            }
-        }).start();
+        int[] elements = new int[100];
+        for(int i = 0; i < elements.length; i++){
+            Random random = new Random();
+            elements[i] = random.nextInt(MAX);
+        }
         
-        new PocessCounterThread(3, "Hilo 2", new PocessCounterThread.TimerEndListener() {
-            @Override
-            public void onEnd() {
-                System.out.println("Hilo 2 Terminado");
-            }
-        }).start();
+        new MainWindow(elements).setVisible(true);
 
     }
 
