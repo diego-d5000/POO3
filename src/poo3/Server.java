@@ -5,9 +5,7 @@
  */
 package poo3;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -22,42 +20,15 @@ public class Server {
     private final static int port = 5000;
 
     public static void main(String[] args) {
-        
-        System.out.println("Iniciando Servidor \n\n\n");
-
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Esperando... \n");
-            Socket client = serverSocket.accept();
-            
-            BufferedReader in
-                    = new BufferedReader(
-                            new InputStreamReader(client.getInputStream()));
-
-            PrintWriter out
-                    = new PrintWriter(client.getOutputStream(), true);
-
-            GreetingsProtocol greetingPClient = new GreetingsProtocol.Server();
-
-            String inputLine;
-            String outputLine;
-            
-            
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                outputLine = greetingPClient.getOutputMessage();
-                out.println(outputLine);
-                if (outputLine == null) {
-                    break;
-                }
-            }
-
-            in.close();
-            out.close();
-            client.close();
-            serverSocket.close();
-        } catch (Exception e) {
+            ServerSocket serverSocket = new ServerSocket(ChatSocket.PORT);
+            Socket socket = serverSocket.accept();
+            ChatSocket chatSocket = new ChatSocket(socket);
+            ChatFrame chatFrame = new ChatFrame("Chat Servidor");
+            chatFrame.setSocket(chatSocket);
+            chatFrame.initView();
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }
